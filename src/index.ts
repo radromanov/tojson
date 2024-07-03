@@ -1,18 +1,24 @@
+require("module-alias/register");
+
 import { Command } from "commander";
 import { extname, isAbsolute } from "path";
-import { isAllowed } from "./shared/utils/is-allowed";
-import { ALLOWED_EXTENSIONS } from "./shared/constants/allowed-extensions";
-import { Extension } from "./shared/types/Extension";
+import { isAllowed, isValidOutput } from "./shared/utils";
+import { Extension } from "./shared/types";
+import { ALLOWED_EXTENSIONS, ALLOWED_OUTPUT_TYPES } from "./shared/constants";
+import { Xlsx } from "./core/Xlsx";
 
 const cli = new Command();
 
-cli.requiredOption("-f, --filepath <string>", "absolute path to non-json file");
+cli
+  .requiredOption("-f, --filepath <string>", "absolute path to non-json file")
+  .option("-t, --type <string>", "type to convert to", "json");
 
 cli.parse(process.argv);
 
 cli.action(() => {
-  const { filepath } = cli.opts();
+  let { filepath, type } = cli.opts();
 
+  // Ensure path is absolute
   if (!isAbsolute(filepath))
     cli.error(
       "error: please provide an absolute path (e.g. `/path/to/file.xlsx`)"
@@ -20,6 +26,7 @@ cli.action(() => {
 
   const extension = extname(filepath).split(".")[1] as Extension;
 
+  // Ensure the extension of the file is supported
   if (!isAllowed(extension)) {
     cli.error(
       `error: please provide a valid extension (${ALLOWED_EXTENSIONS.join(
@@ -28,9 +35,19 @@ cli.action(() => {
     );
   }
 
+  // Ensure is a valid output type
+  if (!isValidOutput(type)) {
+    cli.error(
+      `error: please provide a valid output type (${ALLOWED_OUTPUT_TYPES.join(
+        " | "
+      )})`
+    );
+  }
+
   // Extension controller
   switch (extension) {
     case "xlsx":
+      const xl = new Xlsx(filepath).convert();
       // Some .xlsx specific call...
       break;
     default:
