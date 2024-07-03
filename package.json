@@ -1,0 +1,35 @@
+{
+  "name": "file-parser",
+  "version": "0.0.1",
+  "description": "File parser",
+  "main": "dist/index.js",
+  "author": {
+    "name": "Radostin Romanov",
+    "url": "https://github.com/radromanov"
+  },
+  "license": "MIT",
+  "bin": {
+    "tojson": "./dist/index.js"
+  },
+  "scripts": {
+    "chmod": "chmod +x ./dist/index.js",
+    "unlink:cli": "pnpm uninstall --global tojson",
+    "link:cli": "(pnpm unlink:cli || true) && pnpm chmod && tsconfig-paths/register && pnpm link --global",
+    "dev": "tsc -w"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "module-alias": "^2.2.3",
+    "rimraf": "^5.0.7",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "tsconfig-paths": "^4.2.0",
+    "xlsx": "^0.18.5"
+  },
+  "_moduleAliases": {
+    "@": "dist",
+    "@shared": "dist/shared"
+  }
+}

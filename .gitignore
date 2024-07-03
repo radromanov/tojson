@@ -1,0 +1,7 @@
+node_modules/
+.data/
+.env
+dist/
+tsconfig.tsbuildinfo
+assets/
+result.json
