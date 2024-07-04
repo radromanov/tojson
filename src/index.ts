@@ -48,7 +48,8 @@ cli.action(() => {
   switch (extension) {
     case "xlsx":
       // Some .xlsx specific call...
-      const xl = new Xlsx(filepath).convert();
+      // TODO get user provided output path
+      const xl = new Xlsx(filepath).convert("output.json");
 
       break;
     default:

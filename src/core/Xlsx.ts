@@ -10,11 +10,11 @@ export class Xlsx {
     this.workbook = readFile(this.filepath);
   }
 
-  convert() {
+  convert(outputPath: string) {
     const sheetNames = this.workbook.SheetNames;
 
     const json = utils.sheet_to_json(this.workbook.Sheets[sheetNames[0]]);
 
-    writeFileSync("output.json", JSON.stringify(json), "utf-8");
+    writeFileSync(outputPath, JSON.stringify(json), "utf-8");
   }
 }
