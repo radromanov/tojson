@@ -1,4 +1,5 @@
-import xl, { WorkBook } from "xlsx";
+import { writeFileSync } from "fs";
+import { WorkBook, readFile, utils } from "xlsx";
 
 export class Xlsx {
   private filepath: string;
@@ -6,10 +7,14 @@ export class Xlsx {
 
   constructor(filepath: string) {
     this.filepath = filepath;
-    this.workbook = xl.read(this.filepath);
+    this.workbook = readFile(this.filepath);
   }
 
   convert() {
-    return xl.utils.sheet_to_json(this.workbook);
+    const sheetNames = this.workbook.SheetNames;
+
+    const json = utils.sheet_to_json(this.workbook.Sheets[sheetNames[0]]);
+
+    writeFileSync("output.json", JSON.stringify(json), "utf-8");
   }
 }

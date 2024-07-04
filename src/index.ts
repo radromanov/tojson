@@ -24,7 +24,7 @@ cli.action(() => {
       "error: please provide an absolute path (e.g. `/path/to/file.xlsx`)"
     );
 
-  const extension = extname(filepath).split(".")[1] as Extension;
+  const extension = extname(filepath).split(".")[1].toLowerCase() as Extension;
 
   // Ensure the extension of the file is supported
   if (!isAllowed(extension)) {
@@ -47,8 +47,9 @@ cli.action(() => {
   // Extension controller
   switch (extension) {
     case "xlsx":
-      const xl = new Xlsx(filepath).convert();
       // Some .xlsx specific call...
+      const xl = new Xlsx(filepath).convert();
+
       break;
     default:
       break;
